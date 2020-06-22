@@ -32,7 +32,7 @@ import pandas as pd
 news_vectorizer = open("resources/tfidfvect.pkl","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
-# Load your raw 
+# Load your raw data
 raw = pd.read_csv("resources/train.csv")
 
 # The main function where we will build the actual app

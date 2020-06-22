@@ -78,7 +78,7 @@ def main():
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
 
-	# Building out the predication page
+	# Building out the predication page.
 	if selection == "Make Predictions":
 			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of Model4"]
 			selection = st.selectbox("Choose Option", options)
@@ -90,7 +90,7 @@ def main():
 				# Transforming user input with vectorizer
 				vect_text = tweet_cv.transform([tweet_text]).toarray()
 				# Load your .pkl file with the model of your choice + make predictions
-				# Try loading in multiple models to give the user a choice
+				# Try loading in multiple models to give the user a choice.
 				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
 

@@ -80,9 +80,9 @@ def main():
 
 	# Building out the predication page
 	if selection == "Make Predictions":
-			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of 1"]
-			selection = st.sidebar.selectbox("Choose Option", options)
-			st.info("Prediction with ML Models")
+			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of Model4"]
+			selection = st.selectbox("Choose Option", options)
+			st.info(selection)
 			# Creating a text box for user input
 			tweet_text = st.text_area("Enter Text","Type Here")
 
@@ -94,10 +94,10 @@ def main():
 				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
 
-			# When model has successfully run, will print prediction
-			# You can use a dictionary or similar structure to make this output
-			# more human interpretable.
-			st.success("Text Categorized as: {}".format(prediction))
+				# When model has successfully run, will print prediction
+				# You can use a dictionary or similar structure to make this output
+				# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
 
 # Required to let Streamlit instantiate our web app.  
 if __name__ == '__main__':

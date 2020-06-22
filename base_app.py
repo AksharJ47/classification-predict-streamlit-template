@@ -41,37 +41,58 @@ def main():
 
 	# Creates a main title and subheader on your page -
 	# these are static across all pages
-	st.title("Tweet Classifer")
-	st.subheader("Climate change tweet classification")
+	st.title("Climate Change Belief Analysis")
+	st.subheader("Predict an individual’s belief in climate change based on historical tweet data")
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	options = ["Prediction", "Information"]
+	options = ["Information", "EDA", "Insights & Sentiment Analysis","Make Predictions"]
 	selection = st.sidebar.selectbox("Choose Option", options)
 
 	# Building out the "Information" page
 	if selection == "Information":
 		st.info("General Information")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
+		st.markdown("Many companies are built around lessening one’s environmental impact or carbon footprint. They offer products and services that are environmentally friendly and sustainable, in line with their values and ideals. They would like to determine how people perceive climate change and whether or not they believe it is a real threat")
+
+		# Problem Statement
+		st.info("Problem Statement")
+		st.markdown("Build a Machine Learning model that is able to classify whether or not a person believes in climate change, based on their novel tweet data.")
+        
+		# Values Proposition
+		st.info("Value Proposition")
+		st.markdown("This would add to their market research efforts in gauging how their product/service may be received. Providing an accurate and robust solution to this task gives companies access to a broad base of consumer sentiment, spanning multiple demographic and geographic categories - thus increasing their insights and informing future marketing strategies.")
+
 
 		st.subheader("Raw Twitter data and label")
+		st.markdown("The collection of this data was funded by a Canada Foundation for Innovation JELF Grant to Chris Bauch, University of Waterloo. The dataset aggregates tweets pertaining to climate change collected between Apr 27, 2015 and Feb 21, 2018. In total, 43943 tweets were collected. Each tweet is labelled as one of the following classes:")
+        
+		# Classes
+		st.info("Classes")
+		st.markdown("sentiment:")
+		st.markdown("2: tweet which links to factual news about climate change")
+		st.markdown("1: tweet which supports the belief of man-made climate change")
+		st.markdown("0: tweet which neither supports nor refuses the belief of man-made climate change")
+		st.markdown("-1: tweet which does not believe in man-made climate change")
+                   
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
 
 	# Building out the predication page
-	if selection == "Prediction":
-		st.info("Prediction with ML Models")
-		# Creating a text box for user input
-		tweet_text = st.text_area("Enter Text","Type Here")
+	if selection == "Make Predictions":
+			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of 1"]
+			selection = st.sidebar.selectbox("Choose Option", options)
+			st.info("Prediction with ML Models")
+			# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
 
-		if st.button("Classify"):
-			# Transforming user input with vectorizer
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
-			# Load your .pkl file with the model of your choice + make predictions
-			# Try loading in multiple models to give the user a choice
-			predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
-			prediction = predictor.predict(vect_text)
+			if st.button("Classify"):
+				# Transforming user input with vectorizer
+				vect_text = tweet_cv.transform([tweet_text]).toarray()
+				# Load your .pkl file with the model of your choice + make predictions
+				# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
+				prediction = predictor.predict(vect_text)
 
 			# When model has successfully run, will print prediction
 			# You can use a dictionary or similar structure to make this output

@@ -25,15 +25,20 @@
 import streamlit as st
 import joblib,os
 
+#for showing progress while computing predictions
+import time
+
 # Data dependencies
 import pandas as pd
 
 # Vectorizer
 news_vectorizer = open("resources/tfidfvect.pkl","rb")
+# news_vectorizer = open("resources/lin_svc_model.pickle","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
 # Load your raw data
-raw = pd.read_csv("resources/train.csv")
+# raw = pd.read_csv("resources/train.csv")
+raw = pd.read_csv("resources/train_us.csv")
 
 # The main function where we will build the actual app
 def main():
@@ -48,7 +53,8 @@ def main():
 	# you can create multiple pages this way
 	options = ["Information", "EDA", "Insights & Sentiment Analysis","Make Predictions"]
 	selection = st.sidebar.selectbox("Choose Option", options)
-
+    
+#====================================================================================================================
 	# Building out the "Information" page
 	if selection == "Information":
 		st.info("General Information")
@@ -77,22 +83,67 @@ def main():
                    
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
+            
+#=======================================================================================================================
+# 	# Building out the predication page.
+# 	if selection == "Make Predictions":
+# 			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of Model4"]
+# 			selection = st.selectbox("Choose Model", options)
+# 			st.info(selection)
+# 			# Creating a text box for user input
+# 			tweet_text = st.text_area("Enter Text","Type Here")
 
-	# Building out the predication page.
+# 			if st.button("Classify"):
+# 				# Transforming user input with vectorizer
+# 				vect_text = tweet_cv.transform([tweet_text]).toarray()
+# 				# Load your .pkl file with the model of your choice + make predictions
+# 				# Try loading in multiple models to give the user a choice.
+# 				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
+# 				prediction = predictor.predict(vect_text)
+
+# 				# When model has successfully run, will print prediction
+# 				# You can use a dictionary or similar structure to make this output
+# 				# more human interpretable.
+# 				st.success("Text Categorized as: {}".format(prediction))
+                
+#====================================================================================================
+# Building out the predication page.
 	if selection == "Make Predictions":
-			options = ["Name of Model1", "Name of Model2", "Name of Model3","Name of Model4"]
-			selection = st.selectbox("Choose Option", options)
-			st.info(selection)
+			""" Please Choose a Model of your choice"""
+			options = ["Logistics Regression", "Linear SVC", "Original"]
+			selection = st.selectbox("Choose Model", options)
+# 			st.info(selection)
+			""" Please enter the tweet you would like to make predictions on."""
 			# Creating a text box for user input
-			tweet_text = st.text_area("Enter Text","Type Here")
+			tweet_text = st.text_area("Enter Tweet","Type Here")
+			""" You are about to classify the tweet using""" 
+			st.info(selection)
+			# Now, let’s create a progress bar:
+			# Add a placeholder
+			""" computing... please wait""" 
+# 			latest_iteration = st.empty()
+			bar = st.progress(0) 
+
+			for i in range(100):
+				# Update the progress bar with each iteration.
+# 				latest_iteration.text(f'Iteration {i+1}')
+				bar.progress(i + 1)   
+				time.sleep(0.1) 
 
 			if st.button("Classify"):
 				# Transforming user input with vectorizer
 				vect_text = tweet_cv.transform([tweet_text]).toarray()
 				# Load your .pkl file with the model of your choice + make predictions
 				# Try loading in multiple models to give the user a choice.
-				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
-				prediction = predictor.predict(vect_text)
+				if selection == "Logistics Regression":
+					predictor = joblib.load(open(os.path.join("resources/log_reg_model.pickle"),"rb"))
+					prediction = predictor.predict(vect_text)
+				if selection == "Linear SVC":
+					predictor = joblib.load(open(os.path.join("resources/lin_svc_model.pickle"),"rb"))
+					prediction = predictor.predict(vect_text)
+				if selection == "Original":
+					predictor = joblib.load(open(os.path.join("resources/logistic_regression.pkl"),"rb"))
+					prediction = predictor.predict(vect_text)
 
 				# When model has successfully run, will print prediction
 				# You can use a dictionary or similar structure to make this output

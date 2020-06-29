@@ -150,6 +150,7 @@ def main():
 				* Use 'choose option' to change page
 				"""
 		st.sidebar.markdown(page)
+		st.markdown("Get to understand the tweets better by exploring the most popular word, hashtags and handles around the topic of Climate change.")
 		plot_options = ["Most Common Words", "Word cloud", "Twitter Handles","Hashtags"]
 		select = st.sidebar.selectbox("Visuals", plot_options)
 
@@ -160,15 +161,20 @@ def main():
 						</div>
 						""", unsafe_allow_html=True)
 			if st.checkbox("All Tweets"):
-				st.image(words_jpg[0])
+				image = Image.open(words_jpg[0])
+				st.image(image, width = 600)
 			if st.checkbox("Pro Tweets"):
-				st.image(words_jpg[1])
+				image = Image.open(words_jpg[1])
+				st.image(image, width = 600)
 			if st.checkbox("Neutral Tweets"):
-				st.image(words_jpg[2])
+				image = Image.open(words_jpg[2])
+				st.image(image, width = 600)
 			if st.checkbox("Anti Tweets"):
-				st.image(words_jpg[3])
+				image = Image.open(words_jpg[3])
+				st.image(image, width = 600)
 			if st.checkbox("News Tweets"):
-				st.image(words_jpg[4])
+				image = Image.open(words_jpg[4])
+				st.image(image, width = 600)
 
 		if select == "Word cloud":
 			st.markdown("""
@@ -177,15 +183,20 @@ def main():
 						</div>
 						""", unsafe_allow_html=True)
 			if st.checkbox("All Tweets"):
-				st.image(cloud_jpg[0])
+				image = Image.open(cloud_jpg[0])
+				st.image(image, width = 600)
 			if st.checkbox("Pro Tweets"):
-				st.image(cloud_jpg[1])
+				image = Image.open(cloud_jpg[1])
+				st.image(image, width = 600)
 			if st.checkbox("Neutral Tweets"):
-				st.image(cloud_jpg[2])
+				image = Image.open(cloud_jpg[2])
+				st.image(image, width = 600)
 			if st.checkbox("Anti Tweets"):
-				st.image(cloud_jpg[3])
+				image = Image.open(cloud_jpg[3])
+				st.image(image, width = 600)
 			if st.checkbox("News Tweets"):
-				st.image(cloud_jpg[4])
+				image = Image.open(cloud_jpg[4])
+				st.image(image, width = 600)
 
 		if select == "Twitter Handles":
 			st.markdown("""
@@ -194,13 +205,17 @@ def main():
 						</div>
 						""", unsafe_allow_html=True)
 			if st.checkbox("Pro Tweets"):
-				st.image(handl_jpg[0])
+				image = Image.open(handl_jpg[0])
+				st.image(image, width = 600)
 			if st.checkbox("Neutral Tweets"):
-				st.image(handl_jpg[1])
+				image = Image.open(handl_jpg[1])
+				st.image(image, width = 600)
 			if st.checkbox("Anti Tweets"):
-				st.image(handl_jpg[2])
+				image = Image.open(handl_jpg[2])
+				st.image(image, width = 600)
 			if st.checkbox("News Tweets"):
-				st.image(handl_jpg[3])
+				image = Image.open(handl_jpg[3])
+				st.image(image, width = 600)
 
 		if select == "Hashtags":
 			st.markdown("""
@@ -209,13 +224,17 @@ def main():
 						</div>
 						""", unsafe_allow_html=True)
 			if st.checkbox("Pro Tweets"):
-				st.image(hasht_jpg[0])
+				image = Image.open(hasht_jpg[0])
+				st.image(image, width = 600)
 			if st.checkbox("Neutral Tweets"):
-				st.image(hasht_jpg[1])
+				image = Image.open(hasht_jpg[1])
+				st.image(image, width = 600)
 			if st.checkbox("Anti Tweets"):
-				st.image(hasht_jpg[2])
+				image = Image.open(hasht_jpg[2])
+				st.image(image, width = 600)
 			if st.checkbox("News Tweets"):
-				st.image(hasht_jpg[3])
+				image = Image.open(hasht_jpg[3])
+				st.image(image, width = 600)
 
 	# Building "NLP" page
 	if selection == 'NLP':
@@ -230,14 +249,15 @@ def main():
 						<h2 style='color: black;'>Natural Language Processesing (NLP)</h2>
 					</div>
 					""", unsafe_allow_html=True)
-		
+		st.markdown("Perform basic NLP tasks to better understand tweets. Enter a tweet below and select your analysis method.")
 		raw_text = st.text_area("Enter Text Here","Type Here")
-		nlp_task = ["Tokenization", "Stemming", "Lemmatization","NER","POS Tags", 'Sentiment score']
+		nlp_task = ["Tokenization", "Stemming", "Lemmatization","Part of Speech Tags", 'Sentiment score']
 		task_choice = st.selectbox("Choose NLP Task",nlp_task)
 		if st.button("Analyze"):
-			st.info("Text:  {}".format(raw_text))
+			st.info("Tweet:  {}".format(raw_text))
 			tokens = raw_text.split(" ")
 			df = pd.DataFrame()
+			result = ''
 			if task_choice == 'Tokenization':
 				indices = [i for i in tokens]
 				df['Token'] = tokens
@@ -253,16 +273,18 @@ def main():
 				df['Token'] = tokens
 				df['Lemma'] = result
 				st.write(df)
-			elif task_choice == 'POS Tags':
-				result = pos(result, tagset='universal')
+			elif task_choice == 'Part of Speech Tags':
+				result = pos(raw_text, tagset='universal')
 				df = pd.DataFrame(result, columns=['Token', 'POS Tag'])
 				st.write(df)
 			elif task_choice == 'Sentiment score':
 				p = TextBlob(raw_text).sentiment.polarity
 				s = TextBlob(raw_text).sentiment.subjectivity
+				st.markdown('Subjectivity: {}'.format(s))
+				st.markdown('Polarity: {}'.format(p))
 				st.markdown("""
 							<div style="  disp lay:flex;justify-content: center;width: auto;text-align: center;">
-								<p style="border-radius: 5px;background: #f63366;padding: 7px; width: 100%;opacity: 90%",>Polarity is a score ranging from -1 to 1, it describes the general sentiment of a text. 1:positive, 0:neutral and -1:negative</p>
+								<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Polarity is a score ranging from -1 to 1, it describes the general sentiment of a text. 1:positive, 0:neutral and -1:negative</p>
 							</div>
 							""", unsafe_allow_html=True)
 				st.markdown("""
@@ -270,11 +292,10 @@ def main():
 								<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Subjectivity is a score ranging from 0 to 1, it tell us whether the text is subjective or objective. 0:objective and 1:subjective</p>
 							</div>
 							""", unsafe_allow_html=True)
-				st.markdown('Polarity: {}\nSubjectivity: {}'.format(p, s))
 
 # Building out the predication page.
 	if selection == "Make Predictions":
-			""" Please Choose a Model of your choice"""
+
 			st.markdown("<h2 style='color: black;text-align:center;'>Make Prediction</h2>", unsafe_allow_html=True)
 			page = """	
 				* Make Predictions
@@ -282,13 +303,14 @@ def main():
 				* Use 'choose option' to change page
 				"""
 			st.sidebar.markdown(page)
-			options = ["Logistics Regression", "Linear SVC", "Original"]
+			st.markdown("Make use of our top 3 classifiers to classify a tweet. Enter a tweet and pick a model to classify the tweet.")
+			
+			options = ["Logistics Regression", "Linear SVC", "Voting Classifier"]
 			selection = st.selectbox("Choose Model", options)
-# 			st.info(selection)
-			""" Please enter the tweet you would like to make predictions on."""
+
 			# Creating a text box for user input
 			tweet_text = st.text_area("Enter Tweet","Type Here")
-			""" You are about to classify the tweet using""" 
+
 			st.info(selection)
 			# Now, let’s create a progress bar:
 			# Add a placeholder
@@ -306,6 +328,7 @@ def main():
 				# Transforming user input with vectorizer
 				vect_text = tweet_cv.transform([tweet_text])
 				# Load your .pkl file with the model of your choice + make predictions
+				prediction = ''
 				# Try loading in multiple models to give the user a choice.
 				if selection == "Logistics Regression":
 					predictor = joblib.load(open(os.path.join("resources/log_reg_model.pickle"),"rb"))
@@ -313,14 +336,38 @@ def main():
 				if selection == "Linear SVC":
 					predictor = joblib.load(open(os.path.join("resources/lin_svc_model.pickle"),"rb"))
 					prediction = predictor.predict(vect_text)
-				if selection == "Original":
-					predictor = joblib.load(open(os.path.join("resources/logistic_regression.pkl"),"rb"))
+				if selection == "Voting Classifier":
+					predictor = joblib.load(open(os.path.join("resources/ens_svc_model.pickle"),"rb"))
 					prediction = predictor.predict(vect_text)
 
 				# When model has successfully run, will print prediction
 				# You can use a dictionary or similar structure to make this output
 				# more human interpretable.
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Successful...")
+				if prediction == 0:
+					st.markdown("""
+								<div style="  disp lay:flex;justify-content: center;width: auto;text-align: center;">
+									<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Categorized as a Neutral tweet</p>
+								</div>
+								""", unsafe_allow_html=True)
+				if prediction == 1:
+					st.markdown("""
+								<div style="  disp lay:flex;justify-content: center;width: auto;text-align: center;">
+									<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Categorized as a Pro tweet</p>
+								</div>
+								""", unsafe_allow_html=True)
+				if prediction == 2:
+					st.markdown("""
+								<div style="  disp lay:flex;justify-content: center;width: auto;text-align: center;">
+									<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Categorized as a News tweet</p>
+								</div>
+								""", unsafe_allow_html=True)
+				if prediction == -1:
+					st.markdown("""
+								<div style="  disp lay:flex;justify-content: center;width: auto;text-align: center;">
+									<p style="border-radius: 5px;background: #fffd80;padding: 7px; width: 100%;opacity: 90%",>Categorized as Anti tweet</p>
+								</div>
+								""", unsafe_allow_html=True)																													
 
 	# Building out the team page.
 	if selection == "The Team":
@@ -375,7 +422,7 @@ def main():
 						</div>
 												<div style="background: #f0f2f6;border-radius: 5%;margin: 5px;margin-bottom: 50px;width: 300px;padding: 20px;line-height: 20px;color: #8e8b8b;position: relative;">
 						<div style="position: absolute;top: -50px;left: 50%;transform: translateX(-50%);width: 100px;height: 100px;border-radius: 50%;background: #FF4D00;">
-							<img src="https://athena.explore-datascience.net/images/user.png" alt="Team_image" style="width: 100px;height: 100px;padding: 5px;border-radius: 50%">
+							<img src="https://files.slack.com/files-tmb/TSHE6M7T9-F016K2A0J8H-7c2ad66f4a/img_20190519_101852_720.jpg" alt="Team_image" style="width: 100px;height: 100px;padding: 5px;border-radius: 50%">
 						</div>
 						<h3 style="color: black;font-family: "Comic Sans MS", cursive, sans-serif;font-size: 26px;margin-top: 50px;">Ritshidze Nethenzheni</h3>
 						<p style="color: #262730;margin: 12px 0;font-size: 17px;text-transform: uppercase;">Data Scientist</p>
